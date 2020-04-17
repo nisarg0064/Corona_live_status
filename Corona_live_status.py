@@ -5,6 +5,11 @@ import requests
 def method(country):
     res = requests.get("https://api.covid19api.com/summary")
     resp = res.json()
+    
+   for i in resp["Countries"]:
+       Death_all=Death_all+i["TotalDeaths"]
+       Confirmed_all=Confirmed_all+i["TotalConfirmed"]
+       Recovered_all=Recovered_all+i["TotalRecovered"]
 
     for i in resp["Countries"]:
         if i["Country"].lower() == country.lower():
@@ -18,11 +23,19 @@ def method(country):
     death_to_recovery = deaths / recovered
     resulted = (recovered + deaths) / Confirmed
     remainingCases = (1 - resulted) * 100
-    f = f'''Confirmed_Cases:{Confirmed},Deaths:{deaths},Recovered:{recovered}
+     f = f'''  Deaths_world_wide={Death_all}
+
+             Confirmed_world_wide={Confirmed_all}
+
+            Recovered_world_wide={Recovered_all}
+
+          Confirmed_Cases:{Confirmed},Deaths:{deaths},Recovered:{recovered}
+
           Almost {int(death_to_recovery * 100)} people die in compare to 100 recovered
+
           Cases_resulted are:{resulted * Confirmed},Cases_remaining_results:{int(remainingCases * Confirmed / 100)}
+          
          '''
-    label['text']=f
 
 
 
